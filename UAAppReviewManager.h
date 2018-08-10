@@ -403,6 +403,11 @@ typedef BOOL (^UAAppReviewManagerShouldIncrementBlock)(void);
 */
 + (NSString *)reviewURLString;
 
+/*
+ * This method set a personalized custom URL review
+ */
++ (void)setURLReviewString:(NSString*)reviewURLString;
+
 /**
  * Checks whether the user has met all of UAAppReviewManager's conditions.
  * Use this if you'd like to show a pre-rating prompt e.g. "Do you love our app?"

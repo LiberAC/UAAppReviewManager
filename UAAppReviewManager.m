@@ -55,6 +55,8 @@ static NSString * const reviewURLTemplate                   = @"macappstore://it
 @property (nonatomic, strong) NSString *cancelButtonTitle;
 @property (nonatomic, strong) NSString *rateButtonTitle;
 @property (nonatomic, strong) NSString *remindButtonTitle;
+@property (nonatomic, strong) NSString *customURLReviewURL;
+
 
 // Tracking Logic / Configuration
 @property (nonatomic, strong) NSString          *appID;
@@ -318,6 +320,10 @@ static NSString * const reviewURLTemplate                   = @"macappstore://it
 
 + (NSString *)reviewURLString {
 	return [[UAAppReviewManager defaultManager] reviewURLString];
+}
+
++ (void)setURLReviewString:(NSString*)reviewURLString{
+    [UAAppReviewManager defaultManager].customURLReviewURL = reviewURLString;
 }
 
 + (BOOL)canRateApp {
@@ -1026,6 +1032,9 @@ static NSString * const reviewURLTemplate                   = @"macappstore://it
 }
 
 - (NSString *)reviewURLString {
+    if(_customURLReviewURL){
+        return _customURLReviewURL;
+    }
 	NSString *template = reviewURLTemplate;
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 	if (UAAppReviewManagerSystemVersionGreaterThanOrEqualTo(@"7.0")) {
