@@ -985,33 +985,8 @@ static NSString * const reviewURLTemplate                   = @"macappstore://it
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 	//Use the in-app StoreKit view if set, available (iOS 6) and imported This works in the simulator.
-	if (self.opensInStoreKit && NSStringFromClass([SKStoreProductViewController class]) != nil) {
-
-		SKStoreProductViewController *storeViewController = [[SKStoreProductViewController alloc] init];
-		NSNumber *appIDNumber = [NSNumber numberWithInteger:self.appID.integerValue];
-		[storeViewController loadProductWithParameters:@{ SKStoreProductParameterITunesItemIdentifier : appIDNumber } completionBlock:nil];
-		storeViewController.delegate = self;
-
-		if (self.willPresentModalViewBlock)
-			self.willPresentModalViewBlock(self.usesAnimation);
-
-		[[self getRootViewController] presentViewController:storeViewController animated:self.usesAnimation completion:^{
-			[self setModalPanelOpen:YES];
-			//Temporarily use a  status bar to match the StoreKit view.
-			[self setCurrentStatusBarStyle:[UIApplication sharedApplication].statusBarStyle];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
-			if (UAAppReviewManagerSystemVersionLessThan(@"7.0")) {
-				// UIStatusBarStyleBlackOpaque is 2
-				[[UIApplication sharedApplication]setStatusBarStyle:2 animated:self.usesAnimation];
-			} else {
-				[[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault animated:self.usesAnimation];
-			}
-#else
-			[[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:self.usesAnimation];
-#endif
-
-		}];
-
+	if (self.opensInStoreKit && [SKStoreReviewController class]) {
+       [SKStoreReviewController requestReview] ;
         //Use the standard openUrl method
 	} else {
 
